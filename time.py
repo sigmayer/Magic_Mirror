@@ -36,16 +36,21 @@ class Clock(Frame):
         Frame.__init__(self, parent, bg='black')
         # initialize time label
         self.time1 = ''
-        self.timeLbl = Label(self, font=('DIN Next CYR UltraLight', large_text_size), fg="white", bg="black")
-        self.timeLbl.pack(side=TOP, anchor=E)
+        self.timeLbl = Label(self, font=('DIN Next CYR UltraLight', xlarge_text_size), fg="white", bg="black")
+        self.timeLbl.pack(side=TOP, anchor=CENTER)
         # initialize day of week
         self.day_of_week1 = ''
-        self.dayOWLbl = Label(self, text=self.day_of_week1, font=('DIN Next CYR UltraLight', small_text_size), fg="white", bg="black")
-        self.dayOWLbl.pack(side=TOP, anchor=E)
+        #self.dayOWLbl = Label(self, text=self.day_of_week1, font=('DIN Next CYR UltraLight', small_text_size), fg="white", bg="black")
+        #self.dayOWLbl.pack(side=TOP, anchor=E)
         # initialize date label
         self.date1 = ''
-        self.dateLbl = Label(self, text=self.date1, font=('DIN Next CYR UltraLight', small_text_size), fg="white", bg="black")
-        self.dateLbl.pack(side=TOP, anchor=E)
+        #self.dateLbl = Label(self, text=self.date1, font=('DIN Next CYR UltraLight', small_text_size), fg="white", bg="black")
+        #self.dateLbl.pack(side=TOP, anchor=E)
+        #self.tick()
+        #for string, like dayOfTheWeek, date
+        self.allString1 = ''
+        self.allStringLb1 = Label(self, text =(self.day_of_week1, self.date1), font=('DIN Next CYR UltraLight', small_text_size), fg="white", bg="black")
+        self.allStringLb1.pack(side=TOP, anchor=CENTER)
         self.tick()
 
     def tick(self):
@@ -56,17 +61,19 @@ class Clock(Frame):
                 time2 = time.strftime('%H:%M') #hour in 24h format
 
             day_of_week2 = time.strftime('%A')
-            date2 = time.strftime(date_format)
+            date2 = time.strftime("%d.%m")
             # if time string has changed, update it
             if time2 != self.time1:
                 self.time1 = time2
                 self.timeLbl.config(text=time2)
             if day_of_week2 != self.day_of_week1:
                 self.day_of_week1 = day_of_week2
-                self.dayOWLbl.config(text=day_of_week2)
+                #self.dayOWLbl.config(text=day_of_week2)
+                self.allStringLb1.config(text=(day_of_week2,',', self.date1))
             if date2 != self.date1:
                 self.date1 = date2
-                self.dateLbl.config(text=date2)
+                #self.dateLbl.config(text=date2)
+                self.allStringLb1.config(text=(self.day_of_week1,',', date2))                         
             # calls itself every 200 milliseconds
             # to update the time display as needed
             # could use >200 ms, but display gets jerky
@@ -86,7 +93,7 @@ class FullscreenWindow:
         self.tk.bind("<Escape>", self.end_fullscreen)
         # clock
         self.clock = Clock(self.topFrame)
-        self.clock.pack(side=LEFT, anchor=N, padx=60, pady=500)
+        self.clock.pack(side=LEFT, anchor=NW, padx=60, pady=10)
    
 
     def toggle_fullscreen(self, event=None):
