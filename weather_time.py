@@ -181,7 +181,7 @@ class Clock(Frame):
         #self.tick()
         #for string, like dayOfTheWeek, date
         self.allString1 = ''
-        self.allStringLb1 = Label(self, text =(self.day_of_week1, self.date1), font=('DIN Next CYR UltraLight', medium_text_size), fg="white", bg="black")
+        self.allStringLb1 = Label(self, text =(self.day_of_week1, self.date1), font=('DIN Next CYR UltraLight', medium_text_size), fg="white", bg="black") #!ИЗМЕНИЛ РАЗМЕР ШРИФТА НА MEDIUM!
         self.allStringLb1.pack(side=TOP, anchor=CENTER)
         self.tick()
 
@@ -226,11 +226,11 @@ class FullscreenWindow:
         self.tk.bind("<Escape>", self.end_fullscreen)
         # clock
         self.clock = Clock(self.topFrame)
-        #self.clock.pack(side=LEFT, anchor=NW, padx=60, pady=10)                !СТАРЫЕ НАСТРОЙКИ РАСПОЛОЖЕНИЕ!
+        #self.clock.pack(side=LEFT, anchor=NW, padx=60, pady=10)                !СТАРЫЕ НАСТРОЙКИ РАСПОЛОЖЕНИЯ!
         self.clock.pack(anchor=NW, padx=60, pady=10)
         # weather
         self.weather = Weather(self.topFrame)
-        #self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)              !СТАРЫЕ НАСТРОЙКИ РАСПОЛОЖЕНИЕ!
+        #self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)              !СТАРЫЕ НАСТРОЙКИ РАСПОЛОЖЕНИЯ!
         self.weather.pack(anchor=NW, padx=60, pady=50)
 
     def toggle_fullscreen(self, event=None):
