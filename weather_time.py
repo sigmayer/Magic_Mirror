@@ -11,6 +11,7 @@ import traceback
 import feedparser
 import pygame
 from contextlib import contextmanager
+from PIL import Image, ImageTk
 LOCALE_LOCK = threading.Lock()
 
 @contextmanager
@@ -32,124 +33,143 @@ small_text_size = 18
 
 # maps open weather icons to
 # icon reading is not impacted by the 'lang' parameter
-icon_lookup = {
-    'clear-day': "assets/Sun.png",  # clear sky day
-    'wind': "assets/Wind.png",   #wind
-    'cloudy': "assets/Cloud.png",  # cloudy day
-    'partly-cloudy-day': "assets/PartlySunny.png",  # partly cloudy day
-    'rain': "assets/Rain.png",  # rain day
-    'snow': "assets/Snow.png",  # snow day
-    'snow-thin': "assets/Snow.png",  # sleet day
-    'fog': "assets/Haze.png",  # fog day
-    'clear-night': "assets/Moon.png",  # clear sky night
-    'partly-cloudy-night': "assets/PartlyMoon.png",  # scattered clouds night
-    'thunderstorm': "assets/Storm.png",  # thunderstorm
-    'tornado': "assests/Tornado.png",    # tornado
-    'hail': "assests/Hail.png"  # hail
+icon_lookup_day = {
+    'ясно': "c:\\users\\123\\pictures\\weather_sun\\sun.png", 
+    'wind': "assets/Wind.png",   
+    'облачно': "c:\\users\\123\\pictures\\weather_sun\\partialy-cloudy.png",  
+    'пасмурно': "c:\\users\\123\\pictures\\weather_sun\\overcast-day.png",  
+    'дождь': "c:\\users\\123\\pictures\\weather_sun\\rainy-day.png",  
+    'снег': "c:\\users\\123\\pictures\\weather_sun\\snow.png", 
+    'снег с дождем': "c:\\users\\123\\pictures\\weather_sun\\sleet.png",  
+    'fog': "assets/Haze.png", 
+    'clear-night': "assets/Moon.png",  
+    'partly-cloudy-night': "assets/PartlyMoon.png",  
+    'thunderstorm': "assets/Storm.png",  
+    'tornado': "assests/Tornado.png",    
+    'hail': "assests/Hail.png"  
+}
+
+icon_lookup_night = {
+    'ясно': "c:\\users\\123\\pictures\\weather_moon\\moon.png",  
+    'wind': "assets/Wind.png",  
+    'облачно': "c:\\users\\123\\pictures\\weather_moon\\partialy-cloudy.png",  
+    'пасмурно': "c:\\users\\123\\pictures\\weather_moon\\overcast-day.png",  
+    'дождь': "c:\\users\\123\\pictures\\weather_moon\\rainy-day.png",  
+    'снег': "c:\\users\\123\\pictures\\weather_moon\\snow.png",  
+    'снег с дождем': "c:\\users\\123\\pictures\\weather_moon\\sleet.png",  
+    'fog': "assets/Haze.png", 
+    'clear-night': "assets/Moon.png",  
+    'partly-cloudy-night': "assets/PartlyMoon.png",  
+    'thunderstorm': "assets/Storm.png",  
+    'tornado': "assests/Tornado.png",    
+    'hail': "assests/Hail.png"  
 }
 
 class Weather(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, bg='black')
+        self.city = "Санкт-Петербург"
+        self.app = "42dfb1b3420a987588771d0dc21cf225"
         self.temperature = ''
         #self.forecast = ''
         #self.location = ''
-        #self.currently = ''
-        self.icon = ''
+        self.weather_info = ''
+        
         self.degreeFrm = Frame(self, bg="black")
         self.degreeFrm.pack(side=RIGHT, anchor=N)
-        self.temperatureLbl = Label(self.degreeFrm, font=('Helvetica', xlarge_text_size), fg="white", bg="black")
-        self.temperatureLbl.pack(side=LEFT, anchor=W)
-        #self.iconLbl = Label(self.degreeFrm, bg="black")
-        self.iconLbl = Label(self, font=('Helvetica', large_text_size), fg="white", bg="black")
-        self.iconLbl.pack(side=LEFT, anchor=W, padx=20)
-        #self.currentlyLbl = Label(self, font=('Helvetica', medium_text_size), fg="white", bg="black")
-        #self.currentlyLbl.pack(side=TOP, anchor=W)
+        
+        self.iconLb1 = Label(self, bg="black")
+        self.iconLb1.pack(side=LEFT, anchor=W, padx=20)
+
+        self.wthrLbl = Label(self, font=('Helvetica', large_text_size), fg="white", bg="black")
+        self.wthrLbl.pack(side=BOTTOM, anchor=W, padx=20)
+
+        self.temperatureLbl = Label(self, font=('Helvetica', xlarge_text_size), fg="white", bg="black")
+        self.temperatureLbl.pack(side=BOTTOM, anchor=W)
+
         #self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black")
         #self.forecastLbl.pack(side=TOP, anchor=W)
-        #self.locationLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black")
-        #self.locationLbl.pack(side=TOP, anchor=W)
+
+        self.get_ip()
         self.get_weather()
 
-    #def get_ip(self):
-        #try:
-            #ip_url = "http://jsonip.com/"
-            #req = requests.get(ip_url)
-            #ip_json = json.loads(req.text)
-            #return ip_json['ip']
-        #except Exception as e:
-            #traceback.print_exc()
-            #return ("Error: %s. Cannot get ip." %e)
+    def get_ip(self):
+
+        s_city = self.city
+        city_id = 0
+        appid = self.app
+        
+        try:
+            res = requests.get("http://api.openweathermap.org/data/2.5/find", params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
+            data = res.json()
+            return data['list'][0]['id']
+        except Exception as e:
+            traceback.print_exc()
+            return ("Error: %s. Cannot get ip." %e)
 
     def get_weather(self):
         
-        s_city = "Saint Petersburg"
-        city_id = 498817
-        appid = "42dfb1b3420a987588771d0dc21cf225"
+        s_city = self.city
+        city_id = self.get_ip()
+        appid = self.app
         
         try:
-
-            #if latitude is None and longitude is None:
-                # get location
-                #location_req_url = "http://freegeoip.net/json/%s" % self.get_ip()
-                #r = requests.get(location_req_url)
-                #location_obj = json.loads(r.text)
-
-                #lat = location_obj['latitude']
-                #lon = location_obj['longitude']
-
-                #location2 = "%s, %s" % (location_obj['city'], location_obj['region_code'])
-
-                # get weather
-                #weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (weather_api_token, lat,lon,weather_lang,weather_unit)
-            #else:
-                #location2 = ""
-                # get weather
-                #weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (weather_api_token, latitude, longitude, weather_lang, weather_unit)
 
             degree_sign= u'\N{DEGREE SIGN}'
             r = requests.get("http://api.openweathermap.org/data/2.5/weather", params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
             data = r.json()
             wthr = data['weather'][0]['description']
-            temp = data['main']['temp']
-            temp = round(temp)
-            temp = (temp, degree_sign)
-            #weather_obj = json.loads(r.text)
+            temp1 = data['main']['temp']
+            temp1 = round(temp1)
+            temp1 = str(temp1)
+            temp = (temp1 + degree_sign)
 
-            #temperature2 = "%s%s" % (str(int(weather_obj['currently']['temperature'])), degree_sign)
-            #currently2 = weather_obj['currently']['summary']
-            #forecast2 = weather_obj["hourly"]["summary"]
+            weather_info2 = wthr
+            icon_id = wthr
 
-            #icon_id = weather_obj['currently']['icon']
-            #icon2 = None
-            icon2 = wthr
+            time_inf = Clock(self)
+            timing = time_inf.time1
+            a = timing.split(':')
+            hours = a[1]
+            hours = int(hours)
 
-            #if icon_id in icon_lookup:
-                #icon2 = icon_lookup[icon_id]
+            if hours > 9:
+                if icon_id in icon_lookup_night:
+                    icon = icon_lookup_night[icon_id]
+                    image = Image.open(icon)
+                    image = image.resize((220, 220), Image.ANTIALIAS)
+                    photo = ImageTk.PhotoImage(image)
+                    self.iconLb1.image = photo
+                    self.iconLb1.config(image = photo)
+                else:
+                    # remove image
+                    self.iconLbl.config(image='')
+ 
+            else:
+                if icon_id in icon_lookup_day:
+                    icon = icon_lookup_day[icon_id]
+                    image = Image.open(icon)
+                    image = image.resize((220, 220), Image.ANTIALIAS)
+                    photo = ImageTk.PhotoImage(image)
+                    self.iconLb1.image = photo
+                    self.iconLb1.config(image = photo)
+                else:
+                    # remove image
+                    self.iconLbl.config(image='')
 
-            if icon2 is not None:
-                if self.icon != icon2:
-                    self.icon = icon2
-                    #image = Image.open(icon2)
-                    #image = image.resize((100, 100), Image.ANTIALIAS)
-                    #image = image.convert('RGB')
-                    #photo = ImageTk.PhotoImage(image)
+            if weather_info2 is not None:
+                if self.weather_info != weather_info2:
+                    self.weather_info = weather_info2
+                    self.wthrLbl.config(text=weather_info2)
 
-                    self.iconLbl.config(text=icon2)
-                    #self.iconLbl.image = photo
-            #else:
-                # remove image
-                #self.iconLbl.config(image='')
-
-            #if self.currently != temp:
-                #self.currently = temp
-                #self.currentlyLbl.config(text=temp)
-            #if self.forecast != forecast2:
-                #self.forecast = forecast2
-                #self.forecastLbl.config(text=forecast2)
             if self.temperature != temp:
                 self.temperature = temp
                 self.temperatureLbl.config(text=temp)
+
+            #if self.forecast != forecast2:
+                #self.forecast = forecast2
+                #self.forecastLbl.config(text=forecast2)
+                
             #if self.location != location2:
                 #if location2 == ", ":
                     #self.location = "Cannot Pinpoint Location"
@@ -157,6 +177,7 @@ class Weather(Frame):
                 #else:
                     #self.location = location2
                     #self.locationLbl.config(text=location2)
+                
         except Exception as e:
             traceback.print_exc()
             print ("Error: %s. Cannot get weather." %e)
