@@ -133,9 +133,9 @@ class Weather(Frame):
             hours = a[1]
             hours = int(hours)
 
-            if hours < 9:
-                if icon_id in icon_lookup_night:
-                    icon = icon_lookup_night[icon_id]
+            if hours < 8 and hours >= 20:
+                if icon_id in icon_lookup_day:
+                    icon = icon_lookup_day[icon_id]
                     image = Image.open(icon)
                     image = image.resize((220, 220), Image.ANTIALIAS)
                     photo = ImageTk.PhotoImage(image)
@@ -144,10 +144,11 @@ class Weather(Frame):
                 else:
                     # remove image
                     self.iconLbl.config(image='')
+                
  
             else:
-                if icon_id in icon_lookup_day:
-                    icon = icon_lookup_day[icon_id]
+                if icon_id in icon_lookup_night:
+                    icon = icon_lookup_night[icon_id]
                     image = Image.open(icon)
                     image = image.resize((220, 220), Image.ANTIALIAS)
                     photo = ImageTk.PhotoImage(image)
