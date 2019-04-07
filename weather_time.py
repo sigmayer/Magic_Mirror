@@ -34,13 +34,13 @@ small_text_size = 18
 # maps open weather icons to
 # icon reading is not impacted by the 'lang' parameter
 icon_lookup_day = {
-    'ясно': "c:\\users\\123\\pictures\\weather_sun\\sun.png", 
+    'ясно': "c:\\users\\123\\pictures\\weather_day\\sun.png", 
     'wind': "assets/Wind.png",   
-    'облачно': "c:\\users\\123\\pictures\\weather_sun\\partialy-cloudy.png",  
-    'пасмурно': "c:\\users\\123\\pictures\\weather_sun\\overcast-day.png",  
-    'дождь': "c:\\users\\123\\pictures\\weather_sun\\rainy-day.png",  
-    'снег': "c:\\users\\123\\pictures\\weather_sun\\snow.png", 
-    'снег с дождем': "c:\\users\\123\\pictures\\weather_sun\\sleet.png",  
+    'облачно': "c:\\users\\123\\pictures\\weather_day\\partialy-cloudy.png",  
+    'пасмурно': "c:\\users\\123\\pictures\\weather_day\\overcast-day.png",  
+    'дождь': "c:\\users\\123\\pictures\\weather_day\\rainy-day.png",  
+    'снег': "c:\\users\\123\\pictures\\weather_day\\snow.png", 
+    'снег с дождем': "c:\\users\\123\\pictures\\weather_day\\sleet.png",  
     'fog': "assets/Haze.png", 
     'clear-night': "assets/Moon.png",  
     'partly-cloudy-night': "assets/PartlyMoon.png",  
@@ -50,13 +50,13 @@ icon_lookup_day = {
 }
 
 icon_lookup_night = {
-    'ясно': "c:\\users\\123\\pictures\\weather_moon\\moon.png",  
+    'ясно': "c:\\users\\123\\pictures\\weather_night\\moon.png",  
     'wind': "assets/Wind.png",  
-    'облачно': "c:\\users\\123\\pictures\\weather_moon\\partialy-cloudy.png",  
-    'пасмурно': "c:\\users\\123\\pictures\\weather_moon\\overcast-day.png",  
-    'дождь': "c:\\users\\123\\pictures\\weather_moon\\rainy-day.png",  
-    'снег': "c:\\users\\123\\pictures\\weather_moon\\snow.png",  
-    'снег с дождем': "c:\\users\\123\\pictures\\weather_moon\\sleet.png",  
+    'облачно': "c:\\users\\123\\pictures\\weather_night\\partialy-cloudy.png",  
+    'пасмурно': "c:\\users\\123\\pictures\\weather_night\\overcast-day.png",  
+    'дождь': "c:\\users\\123\\pictures\\weather_night\\rainy-day.png",  
+    'снег': "c:\\users\\123\\pictures\\weather_night\\snow.png",  
+    'снег с дождем': "c:\\users\\123\\pictures\\weather_night\\sleet.png",  
     'fog': "assets/Haze.png", 
     'clear-night': "assets/Moon.png",  
     'partly-cloudy-night': "assets/PartlyMoon.png",  
@@ -133,7 +133,7 @@ class Weather(Frame):
             hours = a[1]
             hours = int(hours)
 
-            if hours > 9:
+            if hours < 9:
                 if icon_id in icon_lookup_night:
                     icon = icon_lookup_night[icon_id]
                     image = Image.open(icon)
