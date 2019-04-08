@@ -36,7 +36,8 @@ small_text_size = 18
 icon_lookup_day = {
     'ясно': "c:\\users\\123\\pictures\\weather_day\\sun.png", 
     'wind': "assets/Wind.png",   
-    'облачно': "c:\\users\\123\\pictures\\weather_day\\partialy-cloudy.png",  
+    'облачно': "c:\\users\\123\\pictures\\weather_day\\cloudy.png",
+    'слегка облачно': "c:\\users\\123\\pictures\\weather_day\\partialy-cloudy.png",
     'пасмурно': "c:\\users\\123\\pictures\\weather_day\\overcast-day.png",  
     'дождь': "c:\\users\\123\\pictures\\weather_day\\rainy-day.png",  
     'снег': "c:\\users\\123\\pictures\\weather_day\\snow.png", 
@@ -52,7 +53,8 @@ icon_lookup_day = {
 icon_lookup_night = {
     'ясно': "c:\\users\\123\\pictures\\weather_night\\moon.png",  
     'wind': "assets/Wind.png",  
-    'облачно': "c:\\users\\123\\pictures\\weather_night\\partialy-cloudy.png",  
+    'облачно': "c:\\users\\123\\pictures\\weather_night\\partialy-cloudy.png",
+    'слегка облачно': "c:\\users\\123\\pictures\\weather_day\\partialy-cloudy.png",
     'пасмурно': "c:\\users\\123\\pictures\\weather_night\\overcast-day.png",  
     'дождь': "c:\\users\\123\\pictures\\weather_night\\rainy-day.png",  
     'снег': "c:\\users\\123\\pictures\\weather_night\\snow.png",  
@@ -156,7 +158,7 @@ class Weather(Frame):
                     self.iconLb1.config(image = photo)
                 else:
                     # remove image
-                    self.iconLbl.config(image='')
+                    self.iconLb1.config(image='')
 
             if weather_info2 is not None:
                 if self.weather_info != weather_info2:
