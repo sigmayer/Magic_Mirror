@@ -98,7 +98,8 @@ icon_lookup_day = {
     'дождь': "c:\\users\\123\\pictures\\weather_day\\rainy-day.png",  
     'снег': "c:\\users\\123\\pictures\\weather_day\\snow.png", 
     'снег с дождем': "c:\\users\\123\\pictures\\weather_day\\sleet.png",
-    'легкий дождь': "c:\\users\\123\\pictures\\weather_day\\small_rain.png"
+    'легкий дождь': "c:\\users\\123\\pictures\\weather_day\\small_rain.png",
+    'гроза': "c:\\users\\123\\pictures\\weather_day\\lighting.png"
 }
 
 icon_lookup_night = {
@@ -110,7 +111,8 @@ icon_lookup_night = {
     'дождь': "c:\\users\\123\\pictures\\weather_night\\rainy-day.png",  
     'снег': "c:\\users\\123\\pictures\\weather_night\\snow.png",  
     'снег с дождем': "c:\\users\\123\\pictures\\weather_night\\sleet.png",
-    'легкий дождь': "c:\\users\\123\\pictures\\weather_night\\small_rain.png"
+    'легкий дождь': "c:\\users\\123\\pictures\\weather_night\\small_rain.png",
+    'гроза': "c:\\users\\123\\pictures\\weather_night\\lighting.png"
 }
 
 
@@ -643,19 +645,19 @@ async def on_chat_message(msg):
             command = msg['text']
             if command.find('#')!= -1:
                 note = command.split('#', 1)
-                if note[0] == 'Понедельник' or note[0] == 'понедельник' or note[0] == 'пн' or note[0] == 'Понедельник ' or note[0] == 'понедельник ' or note[0] == 'пн ':
+                if note[0] == 'Понедельник' or note[0] == 'понедельник' or note[0] == 'пн' or note[0] == 'Пн' or note[0] == 'Понедельник ' or note[0] == 'понедельник ' or note[0] == 'пн ' or note[0] == 'Пн ':
                     setNote("Monday.txt", note[1])
-                elif note[0] == 'Вторник' or note[0] == 'вторник' or note[0] == 'вт' or note[0] == 'Вторник ' or note[0] == 'вторник ' or note[0] == 'вт ':
+                elif note[0] == 'Вторник' or note[0] == 'вторник' or note[0] == 'вт' or note[0] == 'Вт' or note[0] == 'Вторник ' or note[0] == 'вторник ' or note[0] == 'вт ' or note[0] == 'Вт ':
                     setNote("Tuesday.txt", note[1])
-                elif note[0] == 'Среда' or note[0] == 'среда' or note[0] == 'ср' or note[0] == 'Среда ' or note[0] == 'среда ' or note[0] == 'ср ':
+                elif note[0] == 'Среда' or note[0] == 'среда' or note[0] == 'ср' or note[0] == 'Ср' or note[0] == 'Среда ' or note[0] == 'среда ' or note[0] == 'ср ' or note[0] == 'Ср ':
                     setNote("Wednesday.txt", note[1])
-                elif note[0] == 'Четверг' or note[0] == 'четверг' or note[0] == 'чт' or note[0] == 'Четверг ' or note[0] == 'четверг ' or note[0] == 'чт ':
+                elif note[0] == 'Четверг' or note[0] == 'четверг' or note[0] == 'чт' or note[0] == 'Чт' or note[0] == 'Четверг ' or note[0] == 'четверг ' or note[0] == 'чт ' or note[0] == 'Чт ':
                     setNote("Thursday.txt", note[1])
-                elif note[0] == 'Пятница' or note[0] == 'пятница' or note[0] == 'пт' or note[0] == 'Пятница ' or note[0] == 'пятница ' or note[0] == 'пт ':
+                elif note[0] == 'Пятница' or note[0] == 'пятница' or note[0] == 'пт' or note[0] == 'Пт' or note[0] == 'Пятница ' or note[0] == 'пятница ' or note[0] == 'пт ' or note[0] == 'Пт ':
                     setNote("Friday.txt", note[1])
-                elif note[0] == 'Суббота' or note[0] == 'суббота' or note[0] == 'сб' or note[0] == 'Суббота ' or note[0] == 'суббота ' or note[0] == 'сб ':
+                elif note[0] == 'Суббота' or note[0] == 'суббота' or note[0] == 'сб' or note[0] == 'Сб' or note[0] == 'Суббота ' or note[0] == 'суббота ' or note[0] == 'сб ' or note[0] == 'Сб ' :
                     setNote("Saturday.txt", note[1])
-                elif note[0] == 'Воскресенье' or note[0] == 'воскресенье' or note[0] == 'вс' or note[0] == 'Воскресенье ' or note[0] == 'воскресенье ' or note[0] == 'вс ':
+                elif note[0] == 'Воскресенье' or note[0] == 'воскресенье' or note[0] == 'вс' or note[0] == 'Вс' or note[0] == 'Воскресенье ' or note[0] == 'воскресенье ' or note[0] == 'вс ' note[0] == 'Вс ':
                     setNote("Sunday.txt", note[1])
                 await bot.sendMessage(chat_id, 'Мудрые слова!',  reply_markup=markup)
             else:
