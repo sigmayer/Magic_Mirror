@@ -56,13 +56,18 @@ def setCityForWeather(city):
         f.write(city)
         
 def readNotes(day):
-    tmp = ""
+    tmp = []
+    i = 0
+    while i < 5:
+        tmp.append('')
+        i = i+1
+        
     a = 0
     f = open(day)
     for line in f:
         if a < 5:
-            tmp = (tmp + line)
-            a = a + 1
+            tmp[a] = line
+            a = a+1
     return tmp
 
 def setNote(day, note):
@@ -74,9 +79,9 @@ def deleteNotes(day):
         f.write(' ')
 
             
-ui_locale = '' # e.g. 'fr_FR' fro French, '' as default
-time_format = 24 # 12 or 24
-date_format = "%b %d, %Y" # check python doc for strftime() for options
+ui_locale = '' 
+time_format = 24 #12 or 24
+date_format = "%b %d, %Y" 
 xlarge_text_size = 94
 large_text_size = 48
 big_text_size = 33
@@ -209,7 +214,6 @@ class Weather(Frame):
                     self.iconLb1.image = photo
                     self.iconLb1.config(image = photo)
                 else:
-                    # remove image
                     self.iconLb1.config(image='')
                 
  
@@ -222,7 +226,6 @@ class Weather(Frame):
                     self.iconLb1.image = photo
                     self.iconLb1.config(image = photo)
                 else:
-                    # remove image
                     self.iconLb1.config(image='')
 
             if weather_info2 is not None:
@@ -254,7 +257,6 @@ class Weather(Frame):
                     self.forecast_iconLb1.image = photo
                     self.forecast_iconLb1.config(image = photo)
                 else:
-                    # remove image
                     self.forecast_iconLb1.config(image='')
             else:
                 if forecast_icon in icon_lookup_night:
@@ -265,43 +267,42 @@ class Weather(Frame):
                     self.forecast_iconLb1.image = photo
                     self.forecast_iconLb1.config(image = photo)
                 else:
-                    # remove image
                     self.forecast_iconLb1.config(image='')
                 
         except Exception as e:
             traceback.print_exc()
             print ("Error: %s. Cannot get weather." %e)
 
-        #self.after(600000, self.get_weather)
-        self.after(500, self.get_weather)
+        #self.after(500, self.get_weather)
+        self.after(200, self.get_weather)
 
 class Notes(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, bg = 'black')
         self.note1 = ''
-        #self.note2 = ''
-        #self.note3 = ''
-        #self.note4 = ''
-        #self.note5 = ''
+        self.note2 = ''
+        self.note3 = ''
+        self.note4 = ''
+        self.note5 = ''
         
-        self.note1Lb = Label(self, text=(self.note1), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
+        self.note1Lb = Label(self, text=(self.note1), font=('Helvetica', big_text_size), fg = "white", bg = "black")
         self.note1Lb.pack(side=TOP, anchor = W)
         
-        #self.note2Lb = Label(self, text=(self.note2), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
-        #self.note2Lb.pack(side=TOP, anchor = CENTER)
+        self.note2Lb = Label(self, text=(self.note2), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note2Lb.pack(side=TOP, anchor = W)
         
-        #self.note3Lb = Label(self, text=(self.note3), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
-        #self.note3Lb.pack(side=TOP, anchor = CENTER)
+        self.note3Lb = Label(self, text=(self.note3), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note3Lb.pack(side=TOP, anchor = W)
         
-        #self.note4Lb = Label(self, text=(self.note4), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
-        #self.note4Lb.pack(side=TOP, anchor = CENTER)
+        self.note4Lb = Label(self, text=(self.note4), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note4Lb.pack(side=TOP, anchor = W)
         
-        #self.note5Lb = Label(self, text=(self.note5), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
-        #self.note5Lb.pack(side=TOP, anchor = CENTER)
+        self.note5Lb = Label(self, text=(self.note5), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note5Lb.pack(side=TOP, anchor = W)
         self.getUpdNotes()
 
     def getUpdNotes(self):
-        TextNote = ''
+        TextNote = []
         day_of_week = time.strftime('%A')
         if day_of_week == 'Monday':
             TextNote = readNotes('Monday.txt')
@@ -319,34 +320,31 @@ class Notes(Frame):
             TextNote = readNotes('Sunday.txt')
             
         oldNote = self.note1
-        if oldNote != TextNote:
-            self.note1 = TextNote
-            self.note1Lb.config(text = TextNote)
+        if oldNote != TextNote[0]:
+            self.note1 = TextNote[0]
+            self.note1Lb.config(text = TextNote[0])
+
+        oldNote = self.note2
+        if oldNote != TextNote[1]:
+            self.note2 = TextNote[1]
+            self.note2Lb.config(text = TextNote[1])
+
+        oldNote = self.note3
+        if oldNote != TextNote[2]:
+            self.note3 = TextNote[2]
+            self.note3Lb.config(text = TextNote[2])
+
+        oldNote = self.note4
+        if oldNote != TextNote[3]:
+            self.note4 = TextNote[3]
+            self.note4Lb.config(text = TextNote[3])
+
+        oldNote = self.note5
+        if oldNote != TextNote[4]:
+            self.note5 = TextNote[4]
+            self.note5Lb.config(text = TextNote[4])
+            
         self.after(200, self.getUpdNotes)
-
-        #oldNote = self.note2
-        #if oldNote != TextNote[1]:
-         #   self.note2 = TextNote[1]
-          #  self.note2Lb.config(text = TextNote[1])
-           # self.after(200, self.getUpdNotes)
-
-        #oldNote = self.note3
-        #if oldNote != TextNote[2]:
-         #   self.note3 = TextNote[2]
-          #  self.note3Lb.config(text = TextNote[2])
-           # self.after(200, self.getUpdNotes)
-
-        #oldNote = self.note4
-        #if oldNote != TextNote[3]:
-         #   self.note4 = TextNote[3]
-          #  self.note4Lb.config(text = TextNote[3])
-           # self.after(200, self.getUpdNotes)
-
-        #oldNote = self.note5
-        #if oldNote != TextNote[4]:
-         #   self.note5 = TextNote[4]
-          #  self.note5Lb.config(text = TextNote[4])
-           # self.after(200, self.getUpdNotes)
         
 
 class Clock(Frame):
@@ -358,7 +356,7 @@ class Clock(Frame):
         self.day_of_week1 = ''
         self.date1 = ''
         self.allString1 = ''
-        self.allStringLb1 = Label(self, text =(self.day_of_week1, self.date1), font=('DIN Next CYR UltraLight', small_text_size), fg="white", bg="black")
+        self.allStringLb1 = Label(self, text =(self.day_of_week1, self.date1), font=('DIN Next CYR UltraLight', medium_text_size), fg="white", bg="black")
         self.allStringLb1.pack(side=TOP, anchor=CENTER)
         self.tick()
 
@@ -366,13 +364,14 @@ class Clock(Frame):
         tz = readTimeZone()
         utc_time = datetime.utcnow()
         temp_tz = pytz.timezone(tz)
-        utc_time =utc_time.replace(tzinfo=pytz.UTC)
+        utc_time = utc_time.replace(tzinfo=pytz.UTC)
         nor_tz = utc_time.astimezone(temp_tz)  
         with setlocale(ui_locale):
             time2 = nor_tz.strftime ('%H:%M')
 
             day_of_week2 = time.strftime('%A')
             date2 = time.strftime("%d.%m")
+            
 	    # if time string has changed, update it
             if time2 != self.time1:
                 self.time1 = time2
@@ -415,7 +414,6 @@ async def set_notes(msg, day):
             setNote('Sunday.txt', Text)
 
 async def on_chat_message(msg):
-#def on_chat_message(msg):
     global id_write_critical_temper
     content_type, chat_type, chat_id = telepot.glance(msg)
     print('Chat:', content_type, chat_type)
@@ -428,13 +426,13 @@ async def on_chat_message(msg):
         command = msg['text'].lower()
         print(command)
 
-        if command == '/start':
+        if command == '/help':
             markup = ReplyKeyboardMarkup(keyboard=[
             [dict(text='Сменить часовой пояс')],
             [dict(text='Сменить город')],
             [dict(text='Удалить заметки')],
             ])
-            await bot.sendMessage(chat_id, 'Привет, я Умное зеркало. Можешь воспользоваться одной из готовых команд. Если же хочешь добавить заметку - напиши сообщение следующего типа: <день недели>#<заметка>. Помни - на каждый день ты можешь иметь не больше пяти заметок. Готов вкалывать.', reply_markup=markup)
+            await bot.sendMessage(chat_id, 'Привет, я Умное зеркало. Можешь воспользоваться одной из готовых команд. Если же хочешь добавить заметку - напиши сообщение следующего типа: <день недели>#<заметка>;<заметка>;... . Помни - на каждый день ты можешь иметь не больше пяти заметок. Готов вкалывать.', reply_markup=markup)
 
         elif command == 'главное меню':
             markup = ReplyKeyboardMarkup(keyboard=[
@@ -646,19 +644,54 @@ async def on_chat_message(msg):
             if command.find('#')!= -1:
                 note = command.split('#', 1)
                 if note[0] == 'Понедельник' or note[0] == 'понедельник' or note[0] == 'пн' or note[0] == 'Пн' or note[0] == 'Понедельник ' or note[0] == 'понедельник ' or note[0] == 'пн ' or note[0] == 'Пн ':
-                    setNote("Monday.txt", note[1])
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Monday.txt", tmp[i])
+                        i = i+1
+                    
                 elif note[0] == 'Вторник' or note[0] == 'вторник' or note[0] == 'вт' or note[0] == 'Вт' or note[0] == 'Вторник ' or note[0] == 'вторник ' or note[0] == 'вт ' or note[0] == 'Вт ':
-                    setNote("Tuesday.txt", note[1])
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Tuesday.txt", tmp[i])
+                        i = i+1
+                    
                 elif note[0] == 'Среда' or note[0] == 'среда' or note[0] == 'ср' or note[0] == 'Ср' or note[0] == 'Среда ' or note[0] == 'среда ' or note[0] == 'ср ' or note[0] == 'Ср ':
-                    setNote("Wednesday.txt", note[1])
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Wednesday.txt", tmp[i])
+                        i = i+1
+                    
                 elif note[0] == 'Четверг' or note[0] == 'четверг' or note[0] == 'чт' or note[0] == 'Чт' or note[0] == 'Четверг ' or note[0] == 'четверг ' or note[0] == 'чт ' or note[0] == 'Чт ':
-                    setNote("Thursday.txt", note[1])
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Thursday.txt", tmp[i])
+                        i = i+1
+                        
                 elif note[0] == 'Пятница' or note[0] == 'пятница' or note[0] == 'пт' or note[0] == 'Пт' or note[0] == 'Пятница ' or note[0] == 'пятница ' or note[0] == 'пт ' or note[0] == 'Пт ':
-                    setNote("Friday.txt", note[1])
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Friday.txt", tmp[i])
+                        i = i+1
+                    
                 elif note[0] == 'Суббота' or note[0] == 'суббота' or note[0] == 'сб' or note[0] == 'Сб' or note[0] == 'Суббота ' or note[0] == 'суббота ' or note[0] == 'сб ' or note[0] == 'Сб ' :
-                    setNote("Saturday.txt", note[1])
-                elif note[0] == 'Воскресенье' or note[0] == 'воскресенье' or note[0] == 'вс' or note[0] == 'Вс' or note[0] == 'Воскресенье ' or note[0] == 'воскресенье ' or note[0] == 'вс ' note[0] == 'Вс ':
-                    setNote("Sunday.txt", note[1])
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Saturday.txt", tmp[i])
+                        i = i+1
+                    
+                elif note[0] == 'Воскресенье' or note[0] == 'воскресенье' or note[0] == 'вс' or note[0] == 'Вс' or note[0] == 'Воскресенье ' or note[0] == 'воскресенье ' or note[0] == 'вс ' or note[0] == 'Вс ':
+                    tmp = note[1].split(';')
+                    i = 0
+                    while i < len(tmp):
+                        setNote("Sunday.txt", tmp[i])
+                        i = i+1
+                    
                 await bot.sendMessage(chat_id, 'Мудрые слова!',  reply_markup=markup)
             else:
                 await bot.sendMessage(chat_id, 'Дурацкий план.',  reply_markup=markup)
@@ -682,27 +715,35 @@ class FullscreenWindow:
     def __init__(self, async_loop, loop, bot):
         self.tk = Tk()
         self.tk.configure(background='black')
-        self.tk.geometry('1366x768')                                             
+        self.tk.geometry('1366x768')
+        
         self.topFrame = Frame(self.tk, background = 'black')
-        self.bottomFrame = Frame(self.tk, background = 'black')
-        self.rightFrame = Frame(self.tk, background = 'black')
         self.topFrame.pack(side = TOP, fill=BOTH, expand = YES)
+        
+        self.bottomFrame = Frame(self.tk, background = 'black')
         self.bottomFrame.pack(side = BOTTOM, fill=BOTH, expand = YES)
+        
+        self.rightFrame = Frame(self.tk, background = 'black')
         self.rightFrame.pack(side = RIGHT, fill=BOTH, expand = YES)
+        
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
+        
         # clock
         self.clock = Clock(self.topFrame)
         self.clock.pack(anchor=NW, padx=60, pady=10)
         self.Notes = Notes(self.topFrame)
         self.Notes.pack(anchor = NW, padx = 60, pady = 10)
+        
         # weather
         self.weather = Weather(self.topFrame)
         self.weather.pack(anchor=NW, padx=60, pady=50)
+        
         # notes
-        self.Notes = Notes(self.topFrame)
-        self.Notes.pack(anchor = NW, padx = 40, pady = 10)
+        #self.Notes = Notes(self.topFrame)
+        #self.Notes.pack(anchor = NW, padx = 40, pady = 10)
+        
         # thread
         run_tgBot(async_loop, loop, bot)
         self.tk.mainloop()
