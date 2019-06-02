@@ -285,19 +285,19 @@ class Notes(Frame):
         self.note4 = ''
         self.note5 = ''
         
-        self.note1Lb = Label(self, text=(self.note1), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note1Lb = Label(self, text=(self.note1), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
         self.note1Lb.pack(side=TOP, anchor = W)
         
-        self.note2Lb = Label(self, text=(self.note2), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note2Lb = Label(self, text=(self.note2), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
         self.note2Lb.pack(side=TOP, anchor = W)
         
-        self.note3Lb = Label(self, text=(self.note3), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note3Lb = Label(self, text=(self.note3), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
         self.note3Lb.pack(side=TOP, anchor = W)
         
-        self.note4Lb = Label(self, text=(self.note4), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note4Lb = Label(self, text=(self.note4), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
         self.note4Lb.pack(side=TOP, anchor = W)
         
-        self.note5Lb = Label(self, text=(self.note5), font=('Helvetica', big_text_size), fg = "white", bg = "black")
+        self.note5Lb = Label(self, text=(self.note5), font=('Helvetica', medium_text_size), fg = "white", bg = "black")
         self.note5Lb.pack(side=TOP, anchor = W)
         self.getUpdNotes()
 
@@ -432,7 +432,7 @@ async def on_chat_message(msg):
             [dict(text='Сменить город')],
             [dict(text='Удалить заметки')],
             ])
-            await bot.sendMessage(chat_id, 'Привет, я Умное зеркало. Можешь воспользоваться одной из готовых команд. Если же хочешь добавить заметку - напиши сообщение следующего типа: <день недели>#<заметка>;<заметка>;... . Помни - на каждый день ты можешь иметь не больше пяти заметок. Готов вкалывать.', reply_markup=markup)
+            await bot.sendMessage(chat_id, 'Привет, я Магическое Зеркало. Можешь воспользоваться одной из готовых команд. Если же хочешь добавить заметку - напиши сообщение следующего типа: <день недели>#<заметка>;<заметка>;... . Помни - на каждый день ты можешь иметь не больше пяти заметок. Готов вкалывать.', reply_markup=markup)
 
         elif command == 'главное меню':
             markup = ReplyKeyboardMarkup(keyboard=[
@@ -733,16 +733,14 @@ class FullscreenWindow:
         # clock
         self.clock = Clock(self.topFrame)
         self.clock.pack(anchor=NW, padx=60, pady=10)
-        self.Notes = Notes(self.topFrame)
-        self.Notes.pack(anchor = NW, padx = 60, pady = 10)
         
         # weather
         self.weather = Weather(self.topFrame)
         self.weather.pack(anchor=NW, padx=60, pady=50)
         
         # notes
-        #self.Notes = Notes(self.topFrame)
-        #self.Notes.pack(anchor = NW, padx = 40, pady = 10)
+        self.Notes = Notes(self.topFrame)
+        self.Notes.pack(anchor = NW, padx = 40, pady = 10)
         
         # thread
         run_tgBot(async_loop, loop, bot)
